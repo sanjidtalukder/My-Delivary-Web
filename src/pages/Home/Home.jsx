@@ -4,6 +4,7 @@ import ServiceCards from './ServiceCards';
 import ClientLogos from './ClientLogos';
 import DeliverySection from './DeliverySection';
 import BeMarcen from './BeMarcen';
+import UserFeedback from './UserFeedback';
 
 const Home = () => {
     return (
@@ -13,6 +14,7 @@ const Home = () => {
           <ClientLogos></ClientLogos>
           <DeliverySection></DeliverySection>
           <BeMarcen></BeMarcen>
+          <UserFeedback></UserFeedback>
         </div>
     );
 };
