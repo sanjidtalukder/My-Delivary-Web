@@ -1,9 +1,16 @@
-import React, { use } from 'react';
-import { AuthContext } from '../context/AuthContext/AuthContext';
+import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
+import { auth } from '../firebase/firebase.config';
 
 const useAuth = () => {
-   const authInfo = use(AuthContext);
-   return authInfo;
+  const provider = new GoogleAuthProvider();
+
+  const signInWithGoogle = () => {
+    return signInWithPopup(auth, provider); // ✅ Firebase popup method
+  };
+
+  return {
+    signInWithGoogle,
+  };
 };
 
 export default useAuth;
