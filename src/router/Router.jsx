@@ -8,6 +8,8 @@ import AuthLayout from "../Layouts/AuthLayout";
 import Login from "../pages/authantication/Login";
 import Register from "../pages/authantication/Register";
 import Coverage from "../pages/coverage/Coverage";
+import AddParcelForm from "../components/Parcel/AddParcelForm";
+import AboutUs from "../components/Parcel/AboutUs";
 
 
 export const router = createBrowserRouter([
@@ -24,7 +26,15 @@ export const router = createBrowserRouter([
           element: <UserFeedback />
         },{
           path:"/coverage",
-          Component: Coverage
+          element: <Coverage></Coverage>
+        },
+        {
+          path:"/about",
+          element:<AboutUs></AboutUs>
+        },
+        {
+          path:"/add-parcel",
+          element:<AddParcelForm></AddParcelForm>,
         }
     
     ]

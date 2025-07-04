@@ -104,7 +104,7 @@ const Register = () => {
           </div>
 
           {/* Submit */}
-          <button type="submit" className="btn btn-success w-full mt-4">
+          <button to="/" type="submit" className="btn btn-success w-full mt-4">
             Register
           </button>
 

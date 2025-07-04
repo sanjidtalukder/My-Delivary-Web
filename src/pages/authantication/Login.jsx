@@ -69,7 +69,7 @@ const Login = () => {
           </div>
 
           {/* Submit */}
-          <button type="submit" className="btn btn-success w-full mt-2">
+          <button to="/" type="submit" className="btn btn-success w-full mt-2">
             Login
           </button>
 

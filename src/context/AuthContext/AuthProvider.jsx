@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { AuthContext } from './AuthContext';
+import React, { useEffect, useState, createContext } from 'react';
+
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
@@ -8,9 +8,13 @@ import {
   GoogleAuthProvider,
   signInWithPopup
 } from 'firebase/auth';
-import { auth } from '../../fairebase/fairebase.init';
+import { auth } from '../../firebase/firebase.config';
+export const AuthContext = createContext();
 
-const googleProvider = new GoogleAuthProvider()
+
+
+const googleProvider = new GoogleAuthProvider();
+
 const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoding] = useState(true);
@@ -25,11 +29,10 @@ const AuthProvider = ({ children }) => {
     return signInWithEmailAndPassword(auth, email, password);
   };
 
-  const singWithGoogle =()=>{
+  const singWithGoogle = () => {
     setLoding(true);
-    return signInWithPopup(auth, googleProvider)
-
-  }
+    return signInWithPopup(auth, googleProvider);
+  };
 
   const logOut = () => {
     setLoding(true);
