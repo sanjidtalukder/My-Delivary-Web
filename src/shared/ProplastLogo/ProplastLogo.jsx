@@ -2,6 +2,7 @@ import React from 'react';
 import logo from '../../assets/logo.png'
 import { Link } from 'react-router';
 
+
 const ProplastLogo = () => {
     return (
         <Link to="/">

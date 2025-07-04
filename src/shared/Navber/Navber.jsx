@@ -23,9 +23,9 @@ const Navber = () => {
        {navItems}
       </ul>
     </div>
-    <a className="btn btn-ghost text-xl">
+    {/* <Link className="btn btn-ghost text-xl"> */}
         <ProplastLogo></ProplastLogo>
-    </a>
+    {/* </ Link> */}
   </div>
   <div className="navbar-center hidden lg:flex">
     <ul className="menu menu-horizontal px-1">
