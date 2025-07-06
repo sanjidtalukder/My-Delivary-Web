@@ -4,7 +4,7 @@ import toast from "react-hot-toast";
 import axios from "axios";
 import { FaBox, FaUserAlt, FaTruck } from "react-icons/fa";
 import { AuthContext } from "../../context/AuthContext/AuthContext";
-
+ import districtBrances from "../../data/districtBranches.json";// make sure this file contains your region/district/area data
 
 const AddParcelForm = () => {
   const { user } = useContext(AuthContext);
@@ -18,10 +18,35 @@ const AddParcelForm = () => {
 
   const [deliveryCost, setDeliveryCost] = useState(null);
   const [showConfirm, setShowConfirm] = useState(false);
+
+  // Sender dynamic states
+  const [senderRegion, setSenderRegion] = useState("");
+  const [senderDistricts, setSenderDistricts] = useState([]);
+  const [senderServiceCenters, setSenderServiceCenters] = useState([]);
+
+  // Watch parcel type to conditionally show weight
   const type = watch("type");
 
+  // Handle sender region change
+  const handleSenderRegionChange = (e) => {
+    const selectedRegion = e.target.value;
+    setSenderRegion(selectedRegion);
+    const filtered = districtBrances.filter((loc) => loc.region === selectedRegion);
+    const uniqueDistricts = [...new Set(filtered.map((loc) => loc.district))];
+    setSenderDistricts(uniqueDistricts);
+    setSenderServiceCenters([]);
+  };
+
+  const handleSenderDistrictChange = (e) => {
+    const district = e.target.value;
+    const filtered = districtBrances.filter(
+      (l) => l.region === senderRegion && l.district === district
+    );
+    const centers = filtered.flatMap((l) => l.covered_area);
+    setSenderServiceCenters(centers);
+  };
+
   const calculateCost = (data) => {
-    console.log(data)
     let cost = 50;
     if (data.type === "non-document") cost += 30;
     if (data.weight) cost += parseInt(data.weight) * 10;
@@ -50,7 +75,7 @@ const AddParcelForm = () => {
       toast.success("Parcel Added Successfully!");
       reset();
       setShowConfirm(false);
-    } catch (err ) {
+    } catch (err) {
       toast.error("Failed to add parcel");
     }
   };
@@ -65,7 +90,6 @@ const AddParcelForm = () => {
       </div>
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
-
         {/* Parcel Info */}
         <div className="bg-gray-50 p-6 rounded-xl shadow hover:shadow-md transition">
           <h3 className="text-xl font-semibold text-gray-700 flex items-center gap-2 mb-4">
@@ -76,12 +100,21 @@ const AddParcelForm = () => {
               <option value="document">Document</option>
               <option value="non-document">Non-Document</option>
             </select>
-            <input {...register("title", { required: true })} placeholder="Parcel Title" className="input input-bordered w-full" />
+            <input
+              {...register("title", { required: true })}
+              placeholder="Parcel Title"
+              className="input input-bordered w-full"
+            />
             {type === "non-document" && (
-              <input {...register("weight")} type="number" placeholder="Weight (kg)" className="input input-bordered w-full" />
+              <input
+                {...register("weight")}
+                type="number"
+                placeholder="Weight (kg)"
+                className="input input-bordered w-full"
+              />
             )}
           </div>
-        </div> 
+        </div>
 
         {/* Sender Info */}
         <div className="bg-gray-50 p-6 rounded-xl shadow hover:shadow-md transition">
@@ -89,10 +122,37 @@ const AddParcelForm = () => {
             <FaUserAlt className="text-green-500" /> Sender Info
           </h3>
           <div className="grid md:grid-cols-2 gap-4">
-            <input defaultValue={user?.displayName} readOnly className="input input-bordered w-full bg-gray-100 cursor-not-allowed" />
+            <input defaultValue={user?.displayName} readOnly className="input input-bordered w-full bg-gray-100" />
             <input {...register("senderContact", { required: true })} placeholder="Contact" className="input input-bordered w-full" />
-            <input {...register("senderRegion", { required: true })} placeholder="Region" className="input input-bordered w-full" />
-            <input {...register("senderServiceCenter", { required: true })} placeholder="Service Center" className="input input-bordered w-full" />
+
+            {/* Dynamic dropdowns for region/district/service center */}
+            <select onChange={handleSenderRegionChange} className="input input-bordered w-full">
+              <option value="">Select Region</option>
+              {[...new Set(districtBrances.map((loc) => loc.region))].map((region) => (
+                <option key={region} value={region}>
+                  {region}
+                </option>
+              ))}
+            </select>
+
+            <select onChange={handleSenderDistrictChange} className="input input-bordered w-full">
+              <option value="">Select District</option>
+              {senderDistricts.map((d) => (
+                <option key={d} value={d}>
+                  {d}
+                </option>
+              ))}
+            </select>
+
+            <select {...register("senderServiceCenter", { required: true })} className="input input-bordered w-full">
+              <option value="">Select Service Center</option>
+              {senderServiceCenters.map((center) => (
+                <option key={center} value={center}>
+                  {center}
+                </option>
+              ))}
+            </select>
+
             <input {...register("senderAddress", { required: true })} placeholder="Address" className="input input-bordered w-full" />
             <input {...register("pickupInstruction", { required: true })} placeholder="Pickup Instruction" className="input input-bordered w-full" />
           </div>
@@ -123,7 +183,9 @@ const AddParcelForm = () => {
           <p className="text-xl font-semibold text-blue-800 mb-3">
             Confirm Submission — Delivery Cost: <span className="text-green-600 font-bold">৳{deliveryCost}</span>
           </p>
-          <button onClick={handleConfirm} className="btn btn-success px-8 text-white">Confirm & Save Parcel</button>
+          <button onClick={handleConfirm} className="btn btn-success px-8 text-white">
+            Confirm & Save Parcel
+          </button>
         </div>
       )}
     </section>
