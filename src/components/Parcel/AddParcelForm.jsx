@@ -4,7 +4,7 @@ import toast from "react-hot-toast";
 import axios from "axios";
 import { FaBox, FaUserAlt, FaTruck } from "react-icons/fa";
 import { AuthContext } from "../../context/AuthContext/AuthContext";
- import districtBrances from "../../data/districtBranches.json";// make sure this file contains your region/district/area data
+ import districtBrances from "../../data/districtBranches.json";
 
 const AddParcelForm = () => {
   const { user } = useContext(AuthContext);

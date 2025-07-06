@@ -3,6 +3,8 @@ import { createRoot } from 'react-dom/client'
 import './index.css'
 import 'leaflet/dist/leaflet.css';
 
+import { Toaster } from 'react-hot-toast';
+
 
 
 import {
@@ -17,6 +19,7 @@ createRoot(document.getElementById('root')).render(
   <StrictMode>
     <div className='font.urbanist max-w-7xl mx-auto'>
 <AuthProvider>
+   <Toaster position="top-right" />
    <RouterProvider router={router} />
 </AuthProvider>
     </div>
