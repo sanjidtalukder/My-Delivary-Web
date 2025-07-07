@@ -1,6 +1,7 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import SocialLoin from './socialLogin/SocialLoin';
+import {   useNavigate } from 'react-router';
 
 const Login = () => {
   const {
@@ -9,8 +10,10 @@ const Login = () => {
     formState: { errors }
   } = useForm();
 
+  const navigate = useNavigate();
   const onSubmit = (data) => {
     console.log("Login Data:", data);
+    navigate('/')
   };
 
   return (
@@ -69,7 +72,7 @@ const Login = () => {
           </div>
 
           {/* Submit */}
-          <button to="/" type="submit" className="btn btn-success w-full mt-2">
+          <button  type="submit" className="btn btn-success w-full mt-2">
             Login
           </button>
 

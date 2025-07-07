@@ -1,7 +1,11 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { useForm } from 'react-hook-form';
 import useAuth from '../../hooks/useAuth';
 import SocialLoin from './socialLogin/SocialLoin';
+import { AuthContext } from '../../context/AuthContext/AuthContext';
+import { useNavigate } from 'react-router';
+// const { createUser } = useContext(AuthContext); 
+
 
 
 const Register = () => {
@@ -12,13 +16,16 @@ const Register = () => {
     formState: { errors },
   } = useForm();
 
-  const {creatUser}= useAuth()
+const { createUser } = useContext(AuthContext);
 
+
+const navigate = useNavigate();
   const onSubmit = (data) => {
     console.log("Registration Data:", data);
-    creatUser(data.email,data.password)
+    createUser(data.email,data.password)
     .then(result =>{
       console.log(result.user)
+      navigate('/')
     })
     .catch(error => {
       console.error(error);
@@ -104,7 +111,7 @@ const Register = () => {
           </div>
 
           {/* Submit */}
-          <button to="/" type="submit" className="btn btn-success w-full mt-4">
+          <button  type="submit" className="btn btn-success w-full mt-4">
             Register
           </button>
 
